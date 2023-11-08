@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import UploadField from './components/UploadField'
@@ -6,34 +5,7 @@ import './SASS/global.scss'
 
 
 function App() {
-  const [fileList, setFileList] = useState<FileList | null>(null)
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files) {
-      setFileList(files)
-    }
-  }
-
-  const handleUploadClick = () => {
-    if(!fileList) return
-    const formData = new FormData()
-    files.forEach((file, i) => {
-      formData.append('file-'+i, file, file.name)
-    })
-    // formData.append('file', fileList[0])
-    console.log('formData', Array.from(formData.entries()))
-    fetch('https://httpbin.org/post', {
-      method: 'POST',
-      body: formData
-    })
-    .then(res => res.json())
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-  }
-
-  const files = fileList? [...fileList] : []
-
+  
   return (
     <>
       <div>
@@ -46,9 +18,7 @@ function App() {
       </div>
       <h1>File Upload</h1>
       <div className="card">
-        <input type="file" name="file-upload" id="file-upload" onChange={handleInputChange} multiple />
-        <label htmlFor="file-upload"><UploadField files={files} /></label>
-        <button onClick={handleUploadClick}>upload</button>
+        <UploadField />
       </div>
     </>
   )
