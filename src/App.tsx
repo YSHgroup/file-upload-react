@@ -1,10 +1,36 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
+import './App.scss'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [fileList, setFileList] = useState<FileList | null>(null)
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (files) {
+      setFileList(files)
+    }
+  }
+
+  const handleUploadClick = () => {
+    if(!fileList) return
+    const formData = new FormData()
+    files.forEach((file, i) => {
+      formData.append('file-'+i, file, file.name)
+    })
+    // formData.append('file', fileList[0])
+    console.log('formData', formData)
+    fetch('https://httpbin.org/post', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  }
+
+  const files = fileList? [...fileList] : []
 
   return (
     <>
@@ -16,18 +42,11 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>File Upload</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <input type="file" name="file-upload" id="file-upload" onChange={handleInputChange} multiple />
+        <button onClick={handleUploadClick}>upload</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
