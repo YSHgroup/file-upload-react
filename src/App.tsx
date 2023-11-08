@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.scss'
+import UploadField from './components/UploadField'
+import './SASS/global.scss'
+
 
 function App() {
   const [fileList, setFileList] = useState<FileList | null>(null)
@@ -20,7 +22,7 @@ function App() {
       formData.append('file-'+i, file, file.name)
     })
     // formData.append('file', fileList[0])
-    console.log('formData', formData)
+    console.log('formData', Array.from(formData.entries()))
     fetch('https://httpbin.org/post', {
       method: 'POST',
       body: formData
@@ -45,6 +47,7 @@ function App() {
       <h1>File Upload</h1>
       <div className="card">
         <input type="file" name="file-upload" id="file-upload" onChange={handleInputChange} multiple />
+        <label htmlFor="file-upload"><UploadField files={files} /></label>
         <button onClick={handleUploadClick}>upload</button>
       </div>
     </>
