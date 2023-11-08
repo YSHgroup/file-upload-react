@@ -42,6 +42,9 @@
 			}
 		}
 	}
+	.files-field.drag-active {
+		border: 3px solid white;
+	}
 }
 
 @keyframes logo-spin {
