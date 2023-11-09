@@ -1,7 +1,7 @@
 import axios from "axios"
 
 export const handleUploadClick = (files: File[]) => {
-  if(!files) return
+  if (!files) return
   const formData = new FormData()
   files.forEach((file) => {
     formData.append('files', file, file.name)
@@ -16,15 +16,9 @@ export const handleUploadClick = (files: File[]) => {
   //   // },
   //   body: JSON.stringify({ name: 'david' })
   // })
-  const response = axios.post('http://localhost:5000/api/upload', formData, {
-    // headers: {
-    //   'Content-Type':'multipart/form-data; boundary=<calculated when request is sent>',
-    //   // 'Content-Length': '<calculated when request is sent>'
-    // },
-    // data: JSON.stringify({ name: 'david' })
-  })
-  .then(res => res.data.json())
-  .then(res => console.log(res))
-  .catch(err => err.response.data.json())
+  const response = axios.post('http://localhost:5000/api/upload', formData)
+    .then(res => res)
+    .catch(err => err.response)
+  console.log('response-->', response)
   return response
 }

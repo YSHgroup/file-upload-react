@@ -1,19 +1,20 @@
 /** @format */
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { handleUploadClick } from '../functions'
+import * as type from '../types'
 
 const UploadField = () => {
 	const [dragState, setDragState] = useState(false)
 	const [fileList, setFileList] = useState<FileList | null>(null)
+	const [uploadResult, setUploadResult] = useState<type.MessageType>({data: {res: ''}, status: ''})
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files
-    if (files) {
-      setFileList(files)
-    }
-  }
-
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const files = e.target.files
+		if (files) {
+			setFileList(files)
+		}
+	}
 
 	const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault()
@@ -27,17 +28,37 @@ const UploadField = () => {
 	const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		e.stopPropagation()
-		console.log('drop-->')
 		setDragState(false)
 		const files = e.dataTransfer.files
 		if (files) {
 			console.log('dropped-->', Array.from(files))
+			setFileList(files)
 		}
 	}
-  const files = fileList? [...fileList] : []
+
+	const upload = async () => {
+		const res = await handleUploadClick(files)
+		console.log('res-->', res)
+		if (res !== undefined) {
+			setUploadResult({data: res.data, status: res.status.toString()})
+		}
+	}
+	useEffect(() => {
+		console.log('uploaded-result-->', uploadResult);
+		
+	},[uploadResult])
+	const files = fileList ? [...fileList] : []
 
 	return (
 		<div className="card">
+			{uploadResult.data.err || uploadResult.data.res? (
+				<Notification
+					message={uploadResult}
+					closeNotification={() => setUploadResult({data: {}, status: ''})}
+				/>
+			) : (
+				''
+			)}
 			<input
 				type="file"
 				name="file-upload"
@@ -64,7 +85,21 @@ const UploadField = () => {
 					)}
 				</div>
 			</label>
-			<button onClick={() =>handleUploadClick(files)}>upload</button>
+			<button onClick={upload}>upload</button>
+		</div>
+	)
+}
+
+const Notification = ({
+	message,
+	closeNotification,
+}: {
+	message: type.MessageType
+	closeNotification: () => void
+}) => {
+	return (
+		<div className={`upload-result ${message.status === '400'? 'error': ''}`} onClick={closeNotification}>
+			{message.data.res? message.data.res: message.data.err}
 		</div>
 	)
 }

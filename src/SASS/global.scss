@@ -54,6 +54,14 @@
 	input[type = "file"] {
 		display: none;
 	}
+	.upload-result {
+		padding: 5px 1rem;
+		background-color: limegreen;
+		border-radius: 5px;
+	}
+	.upload-result.error {
+		background-color: firebrick;
+	}
 }
 
 @keyframes logo-spin {
