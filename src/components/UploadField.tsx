@@ -32,7 +32,6 @@ const UploadField = () => {
 		const files = e.dataTransfer.files
 		if (files) {
 			console.log('dropped-->', Array.from(files))
-			setFileList(files)
 		}
 	}
   const files = fileList? [...fileList] : []
@@ -65,7 +64,7 @@ const UploadField = () => {
 					)}
 				</div>
 			</label>
-			<button onClick={() => handleUploadClick(files)}>upload</button>
+			<button onClick={() =>handleUploadClick(files)}>upload</button>
 		</div>
 	)
 }

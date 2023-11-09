@@ -40,10 +40,19 @@
 			& > span {
 				display: block;
 			}
+			span:first-of-type {
+				margin-right: .5rem;
+			}
+			span:nth-of-type(2) {
+				margin-left: .5rem;
+			}
 		}
 	}
 	.files-field.drag-active {
 		border: 3px solid white;
+	}
+	input[type = "file"] {
+		display: none;
 	}
 }
 
