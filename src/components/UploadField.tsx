@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { handleUploadClick } from '../functions'
+import Notification from './Notification'
 import * as type from '../types'
 
 const UploadField = () => {
@@ -25,6 +26,7 @@ const UploadField = () => {
 			setDragState(false)
 		}
 	}
+
 	const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
 		e.preventDefault()
 		e.stopPropagation()
@@ -43,10 +45,12 @@ const UploadField = () => {
 			setUploadResult({data: res.data, status: res.status.toString()})
 		}
 	}
+
 	useEffect(() => {
 		console.log('uploaded-result-->', uploadResult);
 		
 	},[uploadResult])
+	
 	const files = fileList ? [...fileList] : []
 
 	return (
@@ -86,20 +90,6 @@ const UploadField = () => {
 				</div>
 			</label>
 			<button onClick={upload}>upload</button>
-		</div>
-	)
-}
-
-const Notification = ({
-	message,
-	closeNotification,
-}: {
-	message: type.MessageType
-	closeNotification: () => void
-}) => {
-	return (
-		<div className={`upload-result ${message.status === '400'? 'error': ''}`} onClick={closeNotification}>
-			{message.data.res? message.data.res: message.data.err}
 		</div>
 	)
 }
