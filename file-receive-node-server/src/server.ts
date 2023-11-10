@@ -13,12 +13,12 @@ app.use(cors())
 
 const port = process.env.PORT || 5000
 // app.use(express.json())
-// app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false }))
 
 // for parsing application/json
 app.use(bodyParser.json())
 // for parsing application/xwww-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: false }))
 // for parsing multipart/form-data
 // app.use(upload.array('files')); 
 // app.use(express.static('public'))
