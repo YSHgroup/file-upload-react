@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useEffect, useState } from 'react'
-import { handleUploadClick } from '../functions'
+import { handleUploadClick } from '../axioses'
 import Notification from './Notification'
 import * as type from '../types'
 
@@ -40,10 +40,14 @@ const UploadField = () => {
 
 	const upload = async () => {
 		const res = await handleUploadClick(files)
-		console.log('res-->', res)
 		if (res !== undefined) {
 			setUploadResult({data: res.data, status: res.status.toString()})
 		}
+	}
+
+	const clickNotification = () => {
+		setUploadResult({data: {}, status: ''})
+		setFileList(null)
 	}
 
 	useEffect(() => {
@@ -58,7 +62,7 @@ const UploadField = () => {
 			{uploadResult.data.err || uploadResult.data.res? (
 				<Notification
 					message={uploadResult}
-					closeNotification={() => setUploadResult({data: {}, status: ''})}
+					closeNotification={clickNotification}
 				/>
 			) : (
 				''
